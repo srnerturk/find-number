@@ -402,9 +402,7 @@
         function resetAllCards() {
             const allCells = document.querySelectorAll('.grid-item');
             allCells.forEach(cell => {
-                if (!cell.classList.contains('revealed')) {
-                    cell.textContent = '?';
-                }
+                cell.textContent = '?'; // Tüm kartları soru işareti yap
                 cell.classList.remove('revealed', 'temp-revealed');
             });
         }
