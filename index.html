@@ -187,6 +187,32 @@
                 margin: 0;
             }
         }
+
+        .game-modes {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            min-width: 120px;
+            border-radius: 10px !important;
+            font-weight: 500;
+        }
+
+        .mode-btn.active {
+            background-color: #0d6efd !important;
+            color: white !important;
+            border-color: #0d6efd !important;
+        }
+
+        @media (max-width: 576px) {
+            .mode-btn {
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -196,6 +222,18 @@
                 <i class="bi bi-grid-3x3-gap-fill me-2"></i>
                 Sayı Bulma Oyunu
             </h1>
+
+            <!-- Mod seçimi için tab'lar -->
+            <div class="game-modes mb-4">
+                <div class="btn-group gap-3" role="group" aria-label="Game modes">
+                    <button type="button" class="btn btn-lg btn-outline-primary mode-btn active" data-mode="3">
+                        3x3 Kolay
+                    </button>
+                    <button type="button" class="btn btn-lg btn-outline-primary mode-btn" data-mode="4">
+                        4x4 Zor
+                    </button>
+                </div>
+            </div>
 
             <div class="row mt-4">
                 <div class="col-6">
@@ -258,9 +296,32 @@
         let maxNumber;
         let attempts = 0;
         let numbers = [];
+        let currentMode = 3; // Varsayılan mod
+
+        // Mod seçimi için event listener'ları ekleyelim
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mod butonlarını seç
+            const modeButtons = document.querySelectorAll('.mode-btn');
+            
+            // Her butona click event listener ekle
+            modeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Aktif class'ı güncelle
+                    modeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Modu güncelle ve oyunu yeniden başlat
+                    currentMode = parseInt(button.dataset.mode);
+                    createGrid();
+                });
+            });
+
+            // Oyunu başlat
+            createGrid();
+        });
 
         function createGrid() {
-            const size = 4; // Sabit 4x4 grid
+            const size = currentMode; // Seçili modu kullan
             const container = document.getElementById('gridContainer');
             
             currentNumber = 1;
@@ -416,7 +477,7 @@
         }
 
         function shareScore() {
-            const text = `🎮 Sayı Bulma Oyunu\n🎯 ${maxNumber} sayıyı ${attempts} denemede buldum!\n🎉 Sen de dene!`;
+            const text = `🎮 Sayı Bulma Oyunu\n🎯 ${currentMode}x${currentMode} modunda ${maxNumber} sayıyı ${attempts} denemede buldum!\n🎉 Sen de dene!`;
             
             if (navigator.share) {
                 navigator.share({
@@ -426,7 +487,6 @@
                 })
                 .catch((error) => console.log('Paylaşım hatası:', error));
             } else {
-                // Tarayıcı paylaşımı desteklemiyorsa metni kopyala
                 navigator.clipboard.writeText(text)
                     .then(() => {
                         alert('Skor kopyalandı!');
@@ -453,11 +513,6 @@
                     input.blur();
                 });
             });
-        });
-
-        // Sayfa yüklendiğinde oyunu başlat
-        document.addEventListener('DOMContentLoaded', () => {
-            createGrid();
         });
     </script>
 </body>
