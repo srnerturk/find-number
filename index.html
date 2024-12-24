@@ -187,34 +187,6 @@
                 margin: 0;
             }
         }
-
-        /* Select box stilleri */
-        .form-select {
-            padding: 12px 36px 12px 12px; /* Daha büyük padding */
-            font-size: 1rem;
-            min-height: 48px; /* Minimum dokunma alanı */
-            background-position: right 12px center; /* Ok işaretinin pozisyonu */
-            cursor: pointer;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        /* Select container'ı için stil */
-        .select-container {
-            margin: 10px auto;
-            max-width: 200px; /* Select box genişliği */
-        }
-
-        @media (max-width: 576px) {
-            .form-select {
-                font-size: 16px; /* iOS'ta yakınlaştırmayı önlemek için minimum 16px */
-            }
-            
-            .select-container {
-                max-width: 180px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -224,17 +196,6 @@
                 <i class="bi bi-grid-3x3-gap-fill me-2"></i>
                 Sayı Bulma Oyunu
             </h1>
-            
-            <div class="row justify-content-center">
-                <div class="select-container">
-                    <select id="gridSize" class="form-select" onchange="createGrid()">
-                        <option value="">Grid boyutu seçin</option>
-                        <option value="3">3x3 Grid</option>
-                        <option value="4">4x4 Grid</option>
-                        <option value="5">5x5 Grid</option>
-                    </select>
-                </div>
-            </div>
 
             <div class="row mt-4">
                 <div class="col-6">
@@ -299,21 +260,17 @@
         let numbers = [];
 
         function createGrid() {
-            const size = document.getElementById('gridSize').value;
+            const size = 4; // Sabit 4x4 grid
             const container = document.getElementById('gridContainer');
-            const messageDiv = document.getElementById('message');
             
             currentNumber = 1;
             attempts = 0;
             maxNumber = size * size;
-         
+            
             updateScore();
             updateCurrentNumber();
             
             container.innerHTML = '';
-            
-            if (!size) return;
-
             container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
 
             numbers = Array.from({length: size * size}, (_, i) => i + 1);
@@ -496,6 +453,11 @@
                     input.blur();
                 });
             });
+        });
+
+        // Sayfa yüklendiğinde oyunu başlat
+        document.addEventListener('DOMContentLoaded', () => {
+            createGrid();
         });
     </script>
 </body>
