@@ -130,8 +130,20 @@
         }
 
         .modal-dialog {
-            margin: 10px;
-            max-width: calc(100% - 20px);
+            margin: 1.75rem auto;
+        }
+
+        @media (max-width: 576px) {
+            .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
+            }
+        }
+
+        @media (min-width: 577px) {
+            .modal-dialog {
+                max-width: 400px;
+            }
         }
 
         .modal-body {
@@ -175,6 +187,34 @@
                 margin: 0;
             }
         }
+
+        /* Select box stilleri */
+        .form-select {
+            padding: 12px 36px 12px 12px; /* Daha büyük padding */
+            font-size: 1rem;
+            min-height: 48px; /* Minimum dokunma alanı */
+            background-position: right 12px center; /* Ok işaretinin pozisyonu */
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Select container'ı için stil */
+        .select-container {
+            margin: 10px auto;
+            max-width: 200px; /* Select box genişliği */
+        }
+
+        @media (max-width: 576px) {
+            .form-select {
+                font-size: 16px; /* iOS'ta yakınlaştırmayı önlemek için minimum 16px */
+            }
+            
+            .select-container {
+                max-width: 180px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -186,7 +226,7 @@
             </h1>
             
             <div class="row justify-content-center">
-                <div class="col-md-4">
+                <div class="select-container">
                     <select id="gridSize" class="form-select" onchange="createGrid()">
                         <option value="">Grid boyutu seçin</option>
                         <option value="3">3x3 Grid</option>
